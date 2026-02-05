@@ -2,20 +2,39 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Pr-Anu 💖</title>
+<title>Pr-Anu 💞 Valentine</title>
 
 <style>
-* { box-sizing: border-box; font-family: "Georgia", serif; }
+*{
+  box-sizing:border-box;
+  font-family:"Georgia", serif;
+}
 
 body{
   margin:0;
   height:100vh;
-  background:black;
+  background:linear-gradient(135deg,#ff9a9e,#fad0c4,#ffd1dc);
   display:flex;
   justify-content:center;
   align-items:center;
   overflow:hidden;
   color:white;
+}
+
+/* 💕 floating hearts */
+.heart{
+  position:absolute;
+  bottom:-20px;
+  font-size:22px;
+  animation:float 6s linear infinite;
+  opacity:0.7;
+}
+
+@keyframes float{
+  to{
+    transform:translateY(-110vh);
+    opacity:0;
+  }
 }
 
 /* ================= VALENTINE PAGE ================= */
@@ -68,63 +87,80 @@ button{
   display:none;
   position:fixed;
   inset:0;
-  background:black;
   justify-content:center;
   align-items:center;
   flex-direction:column;
+  text-align:center;
 }
 
-/* LETTER ROWS */
-.row{
+#line{
   display:flex;
-  gap:18px;
-  margin:10px 0;
+  justify-content:center;
+  align-items:center;
+  gap:20px;
+  font-size:4rem;
+  font-weight:bold;
 }
 
-.letter{
-  font-size:3.2rem;
+.name{
   opacity:0;
-  transition:opacity 0.8s ease;
 }
 
-.show{ opacity:1; }
+.fromLeft{
+  animation:fromLeft 1.8s forwards;
+}
 
-.drop{
+.fromRight{
+  animation:fromRight 1.8s forwards;
+}
+
+@keyframes fromLeft{
+  from{ transform:translateX(-400px); opacity:0; }
+  to{ transform:translateX(0); opacity:1; }
+}
+
+@keyframes fromRight{
+  from{ transform:translateX(400px); opacity:0; }
+  to{ transform:translateX(0); opacity:1; }
+}
+
+/* drop letters */
+.letter{
+  display:inline-block;
   animation:drop 1.4s forwards;
 }
 
 @keyframes drop{
   to{
-    transform:translateY(220px) rotate(90deg);
+    transform:translateY(200px);
     opacity:0;
   }
 }
 
-/* FINAL NAME */
-#finalName{
-  font-size:4rem;
-  margin-top:20px;
+/* final name */
+#final{
+  font-size:4.5rem;
+  margin-top:30px;
   opacity:0;
-  animation:fadeIn 1.5s forwards;
-  animation-delay:3.8s;
+  animation:fadeIn 2s forwards;
+  animation-delay:3.5s;
 }
 
 @keyframes fadeIn{
   to{opacity:1;}
 }
 
-/* ================= MESSAGE ================= */
+/* message */
 #message{
-  margin-top:30px;
   max-width:70%;
-  text-align:center;
+  margin-top:30px;
   opacity:0;
   animation:fadeIn 2s forwards;
-  animation-delay:5.2s; /* AFTER PR-ANU */
+  animation-delay:5s;
 }
 
 #message h2{
-  font-size:2.4rem;
+  font-size:2.5rem;
   margin-bottom:10px;
 }
 
@@ -143,9 +179,14 @@ button{
 
 <body>
 
-<!-- 💘 VALENTINE -->
+<!-- 🔊 SOUNDS -->
+<audio id="noSound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_1c1f8f0f1a.mp3"></audio>
+<audio id="yesSound" src="https://cdn.pixabay.com/download/audio/2022/10/30/audio_8b6f1d1f30.mp3"></audio>
+
+<!-- 💘 VALENTINE PAGE -->
 <div id="valentine">
   <h1>Will You Be My Valentine Forever? 💖</h1>
+
   <div class="area">
     <button id="yes">YES 💘</button>
     <button id="no">NO 🙄</button>
@@ -156,10 +197,12 @@ button{
 <!-- 🎬 NAME + MESSAGE SCENE -->
 <div id="scene">
 
-  <div class="row" id="pragati"></div>
-  <div class="row" id="anurag"></div>
+  <div id="line">
+    <div class="name fromLeft" id="pragati">PRAGATI</div>
+    <div class="name fromRight" id="anurag">ANURAG</div>
+  </div>
 
-  <div id="finalName">PR-ANU 💞</div>
+  <div id="final">PR-ANU 💞</div>
 
   <div id="message">
     <h2>Pr-Anu are meant for a lifetime ♾️💞</h2>
@@ -180,17 +223,22 @@ const no=document.getElementById("no");
 const caption=document.getElementById("caption");
 const valentine=document.getElementById("valentine");
 const scene=document.getElementById("scene");
+const noSound=document.getElementById("noSound");
+const yesSound=document.getElementById("yesSound");
 
 let scale=1, i=0;
 const lines=[
- "Are you sure? 🥺",
- "NO is tired 😌",
- "YES is waiting 💞",
- "Stop teasing 😏",
- "Destiny already knows 💍"
+  "Are you sure? 🥺",
+  "NO NO NO 😤",
+  "That button is naughty 😏",
+  "YES is waiting 💞",
+  "Destiny already decided 💍"
 ];
 
 no.onclick=()=>{
+  noSound.currentTime=0;
+  noSound.play();
+
   caption.innerText=lines[i%lines.length];
   i++;
 
@@ -206,37 +254,41 @@ no.onclick=()=>{
 };
 
 yes.onclick=()=>{
-  valentine.style.display="none";
-  scene.style.display="flex";
-  startNames();
+  yesSound.currentTime=0;
+  yesSound.play();
+
+  setTimeout(()=>{
+    valentine.style.display="none";
+    scene.style.display="flex";
+    dropLetters();
+  },500);
 };
 
-function startNames(){
-  const p=["P","R","A","G","A","T","I"];
-  const a=["A","N","U","R","A","G"];
+// floating hearts
+setInterval(()=>{
+  const h=document.createElement("div");
+  h.className="heart";
+  h.innerText="💖";
+  h.style.left=Math.random()*100+"vw";
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),6000);
+},300);
 
-  const pr=document.getElementById("pragati");
-  const an=document.getElementById("anurag");
-
-  p.forEach((l,idx)=>{
-    const s=document.createElement("span");
-    s.className="letter";
-    s.innerText=l;
-    pr.appendChild(s);
-    setTimeout(()=>s.classList.add("show"),idx*250);
-    if(["A","G","A","T","I"].includes(l))
-      setTimeout(()=>s.classList.add("drop"),1800);
-  });
-
-  a.forEach((l,idx)=>{
-    const s=document.createElement("span");
-    s.className="letter";
-    s.innerText=l;
-    an.appendChild(s);
-    setTimeout(()=>s.classList.add("show"),idx*250);
-    if(["R","A","G"].includes(l))
-      setTimeout(()=>s.classList.add("drop"),1800);
-  });
+// drop letters after names meet
+function dropLetters(){
+  setTimeout(()=>{
+    document.querySelectorAll("#pragati,#anurag").forEach(el=>{
+      const text=el.innerText;
+      el.innerHTML="";
+      [...text].forEach((ch,idx)=>{
+        const s=document.createElement("span");
+        s.className="letter";
+        s.innerText=ch;
+        s.style.animationDelay=idx*0.1+"s";
+        el.appendChild(s);
+      });
+    });
+  },2000);
 }
 </script>
 
