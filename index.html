@@ -5,10 +5,7 @@
 <title>Pr-Anu 💞 Valentine</title>
 
 <style>
-*{
-  box-sizing:border-box;
-  font-family:"Georgia", serif;
-}
+*{ box-sizing:border-box; font-family:"Georgia", serif; }
 
 body{
   margin:0;
@@ -29,18 +26,12 @@ body{
   animation:float 6s linear infinite;
   opacity:0.7;
 }
-
 @keyframes float{
-  to{
-    transform:translateY(-110vh);
-    opacity:0;
-  }
+  to{ transform:translateY(-110vh); opacity:0; }
 }
 
 /* ================= VALENTINE PAGE ================= */
-#valentine{
-  text-align:center;
-}
+#valentine{ text-align:center; }
 
 h1{
   font-size:3rem;
@@ -95,30 +86,20 @@ button{
 
 #line{
   display:flex;
-  justify-content:center;
-  align-items:center;
   gap:20px;
   font-size:4rem;
   font-weight:bold;
 }
 
-.name{
-  opacity:0;
-}
+.name{ opacity:0; }
 
-.fromLeft{
-  animation:fromLeft 1.8s forwards;
-}
-
-.fromRight{
-  animation:fromRight 1.8s forwards;
-}
+.fromLeft{ animation:fromLeft 1.8s forwards; }
+.fromRight{ animation:fromRight 1.8s forwards; }
 
 @keyframes fromLeft{
   from{ transform:translateX(-400px); opacity:0; }
   to{ transform:translateX(0); opacity:1; }
 }
-
 @keyframes fromRight{
   from{ transform:translateX(400px); opacity:0; }
   to{ transform:translateX(0); opacity:1; }
@@ -129,12 +110,8 @@ button{
   display:inline-block;
   animation:drop 1.4s forwards;
 }
-
 @keyframes drop{
-  to{
-    transform:translateY(200px);
-    opacity:0;
-  }
+  to{ transform:translateY(200px); opacity:0; }
 }
 
 /* final name */
@@ -145,48 +122,36 @@ button{
   animation:fadeIn 2s forwards;
   animation-delay:3.5s;
 }
-
 @keyframes fadeIn{
-  to{opacity:1;}
+  to{ opacity:1; }
 }
 
 /* message */
 #message{
   max-width:70%;
   margin-top:30px;
-  opacity:0;
-  animation:fadeIn 2s forwards;
-  animation-delay:5s;
+  min-height:220px;
 }
 
-#message h2{
-  font-size:2.5rem;
-  margin-bottom:10px;
-}
-
-#message h3{
-  font-size:1.4rem;
-  font-weight:normal;
-  margin-bottom:20px;
-}
-
+#message h2,
+#message h3,
 #message p{
-  font-size:1.2rem;
-  line-height:1.7;
+  opacity:1;
+  margin:6px 0;
 }
 </style>
 </head>
 
 <body>
 
-<!-- 🔊 SOUNDS -->
-<audio id="noSound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_1c1f8f0f1a.mp3"></audio>
-<audio id="yesSound" src="https://cdn.pixabay.com/download/audio/2022/10/30/audio_8b6f1d1f30.mp3"></audio>
+<!-- 🔊 LOCAL AUDIO -->
+<audio id="noSound" src="./no.mp3" preload="auto"></audio>
+<audio id="yesSound" src="./yes.mp3" preload="auto"></audio>
+<audio id="loveSong" src="./love.mp3" preload="auto"></audio>
 
 <!-- 💘 VALENTINE PAGE -->
 <div id="valentine">
   <h1>Will You Be My Valentine Forever? 💖</h1>
-
   <div class="area">
     <button id="yes">YES 💘</button>
     <button id="no">NO 🙄</button>
@@ -204,16 +169,7 @@ button{
 
   <div id="final">PR-ANU 💞</div>
 
-  <div id="message">
-    <h2>Pr-Anu are meant for a lifetime ♾️💞</h2>
-    <h3>14 February is almost here… and you are the only 1️⃣4️⃣ me 💘</h3>
-
-    <p>I will love you — always, without conditions.</p>
-    <p>I will love you in quiet mornings and slow nights.</p>
-    <p>I will love you in every shade of color.</p>
-    <p>I will love you in every hour of the day.</p>
-    <p>I will choose you in every stage, every lifetime. ♾️</p>
-  </div>
+  <div id="message"></div>
 
 </div>
 
@@ -223,17 +179,32 @@ const no=document.getElementById("no");
 const caption=document.getElementById("caption");
 const valentine=document.getElementById("valentine");
 const scene=document.getElementById("scene");
+
 const noSound=document.getElementById("noSound");
 const yesSound=document.getElementById("yesSound");
+const loveSong=document.getElementById("loveSong");
 
-let scale=1, i=0;
+// song settings
+const SONG_START=111; // 1:51
+const SONG_DURATION=41;
+
+let scale=1,i=0;
 const lines=[
-  "Are you sure? 🥺",
-  "NO NO NO 😤",
-  "That button is naughty 😏",
-  "YES is waiting 💞",
-  "Destiny already decided 💍"
+ "Are you sure babe? 🥺",
+ "Gandaa Bachhaa😤",
+ "You can't Say NO anymore.. 😏",
+ "YES is waiting… and so am I 💞",
+ "Destiny already decided ... Say Yes💍"
 ];
+
+// unlock audio
+document.addEventListener("click",()=>{
+  [noSound,yesSound,loveSong].forEach(s=>{
+    s.play().then(()=>{
+      s.pause(); s.currentTime=0;
+    }).catch(()=>{});
+  });
+},{once:true});
 
 no.onclick=()=>{
   noSound.currentTime=0;
@@ -258,13 +229,20 @@ yes.onclick=()=>{
   yesSound.play();
 
   setTimeout(()=>{
+    loveSong.currentTime=SONG_START;
+    loveSong.play();
+    setTimeout(()=>loveSong.pause(),SONG_DURATION*1000);
+  },600);
+
+  setTimeout(()=>{
     valentine.style.display="none";
     scene.style.display="flex";
     dropLetters();
+    startTypewriter();
   },500);
 };
 
-// floating hearts
+// hearts
 setInterval(()=>{
   const h=document.createElement("div");
   h.className="heart";
@@ -274,21 +252,48 @@ setInterval(()=>{
   setTimeout(()=>h.remove(),6000);
 },300);
 
-// drop letters after names meet
+// drop letters
 function dropLetters(){
   setTimeout(()=>{
     document.querySelectorAll("#pragati,#anurag").forEach(el=>{
-      const text=el.innerText;
+      const t=el.innerText;
       el.innerHTML="";
-      [...text].forEach((ch,idx)=>{
+      [...t].forEach((ch,i)=>{
         const s=document.createElement("span");
         s.className="letter";
         s.innerText=ch;
-        s.style.animationDelay=idx*0.1+"s";
+        s.style.animationDelay=i*0.1+"s";
         el.appendChild(s);
       });
     });
   },2000);
+}
+
+/* ❤️ TYPEWRITER MESSAGE */
+function startTypewriter(){
+  const msg=document.getElementById("message");
+
+  const text = `
+<h2>Pr-Anu are meant for a lifetime ♾️💞</h2>
+<h3>14 February is almost here… and you are the only 1️⃣4️⃣ me 💘</h3>
+<p>I will love you — always, without conditions.</p>
+<p>I will love you in quiet mornings and slow nights.</p>
+<p>I will love you in every shade of color.</p>
+<p>I will love you in every hour of the day.</p>
+<p>I will choose you in every stage, every lifetime. ♾️</p>
+`;
+
+  let i=0;
+  const totalTime=30000; // 30 sec
+  const chars=text.length;
+  const speed=totalTime/chars;
+
+  function type(){
+    msg.innerHTML=text.slice(0,i++);
+    if(i<=chars) setTimeout(type,speed);
+  }
+
+  setTimeout(type,4500); // after PR-ANU appears
 }
 </script>
 
