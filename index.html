@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Pr-Anu ♾️ Valentine</title>
+
+<style>
+* { box-sizing: border-box; font-family: 'Georgia', serif; }
+
+body {
+    margin: 0;
+    height: 100vh;
+    background: radial-gradient(circle, #ff758c, #ff7eb3);
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+}
+
+/* 🎬 TRAILER */
+#trailer {
+    position: fixed;
+    inset: 0;
+    background: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    z-index: 10;
+}
+
+.name {
+    position: absolute;
+    font-size: 4rem;
+    font-weight: bold;
+    opacity: 0;
+}
+
+#pragati {
+    left: -100%;
+    animation: leftIn 2s forwards;
+}
+
+#anurag {
+    right: -100%;
+    animation: rightIn 2s forwards;
+    animation-delay: 1s;
+}
+
+@keyframes leftIn {
+    to { left: 40%; opacity: 1; }
+}
+
+@keyframes rightIn {
+    to { right: 40%; opacity: 1; }
+}
+
+#merge {
+    position: absolute;
+    font-size: 5rem;
+    opacity: 0;
+    animation: merge 2s forwards;
+    animation-delay: 3s;
+}
+
+@keyframes merge {
+    from { transform: scale(3); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+/* 💌 LOVE MESSAGE */
+#loveMessage {
+    position: absolute;
+    bottom: 10%;
+    max-width: 80%;
+    text-align: center;
+    opacity: 0;
+    animation: fadeUp 3s forwards;
+    animation-delay: 5s;
+}
+
+#loveMessage h2 {
+    font-size: 2.6rem;
+    margin-bottom: 10px;
+}
+
+#loveMessage h3 {
+    font-size: 1.6rem;
+    margin-bottom: 25px;
+    font-weight: normal;
+}
+
+#loveMessage p {
+    font-size: 1.3rem;
+    line-height: 1.8;
+    margin: 8px 0;
+}
+
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* 💘 MAIN PROPOSAL */
+.container {
+    display: none;
+    text-align: center;
+    z-index: 2;
+}
+
+h1 {
+    font-size: 3rem;
+    margin-bottom: 30px;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    50% { transform: scale(1.05); }
+}
+
+.buttons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+}
+
+button {
+    padding: 15px 35px;
+    font-size: 1.5rem;
+    border-radius: 40px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#yesBtn { background: #ff003c; color: white; }
+#noBtn { background: white; color: #ff003c; }
+
+.caption {
+    margin-top: 20px;
+    font-size: 1.3rem;
+}
+
+/* 💋 FINAL */
+.final {
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(135deg, #ff4d6d, #ffb3c6);
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 2.5rem;
+}
+
+.kiss {
+    font-size: 4rem;
+    animation: kiss 1s infinite alternate;
+}
+
+@keyframes kiss {
+    to { transform: scale(1.4); }
+}
+
+/* 💕 HEARTS */
+.heart {
+    position: absolute;
+    bottom: -10px;
+    font-size: 24px;
+    animation: float 5s linear infinite;
+}
+
+@keyframes float {
+    to { transform: translateY(-110vh); opacity: 0; }
+}
+</style>
+</head>
+
+<body>
+
+<!-- 🎵 MUSIC -->
+<audio autoplay loop>
+  <source src="https://cdn.pixabay.com/download/audio/2022/10/26/audio_29c7f4c4c6.mp3">
+</audio>
+
+<!-- 🎬 TRAILER -->
+<div id="trailer">
+    <div class="name" id="pragati">PRAGATI</div>
+    <div class="name" id="anurag">ANURAG</div>
+    <div id="merge">Pr-Anu 💞</div>
+
+    <div id="loveMessage">
+        <h2>Pr-Anu are meant for a lifetime ♾️💞</h2>
+        <h3>14 February is almost here… and you are the only 1️⃣4️⃣ me 💘</h3>
+
+        <p>I will love you — always, without conditions.</p>
+        <p>I will love you in the quiet mornings and in the long, sleepy nights.</p>
+        <p>I will love you in every shade of color, even the ones we haven’t seen yet.</p>
+        <p>I will love you in every hour of the day, in every version of us.</p>
+        <p>And when life changes its seasons, I will still choose you —</p>
+        <p>in every stage, in every lifetime. ♾️💖</p>
+    </div>
+</div>
+
+<!-- 💘 PROPOSAL -->
+<div class="container" id="main">
+    <h1>Will You Be My Valentine Forever? 💖</h1>
+    <div class="buttons">
+        <button id="yesBtn">YES 💘</button>
+        <button id="noBtn">NO 🙄</button>
+    </div>
+    <div class="caption" id="caption"></div>
+</div>
+
+<!-- 💋 FINAL -->
+<div class="final" id="final">
+    <div class="kiss">💋💞💋</div>
+    <p>No other option is left for you 😌</p>
+</div>
+
+<script>
+const trailer = document.getElementById("trailer");
+const main = document.getElementById("main");
+const noBtn = document.getElementById("noBtn");
+const yesBtn = document.getElementById("yesBtn");
+const caption = document.getElementById("caption");
+const final = document.getElementById("final");
+
+let count = 0;
+let scale = 1;
+
+const lines = [
+  "NO is not allowed here 😌",
+  "Try again… destiny says YES 💘",
+  "My heart already chose you 🥺",
+  "Stop teasing, you know the answer 😏",
+  "YES is the only valid option 💍"
+];
+
+setTimeout(() => {
+    trailer.style.display = "none";
+    main.style.display = "block";
+}, 7000);
+
+noBtn.onclick = () => {
+    caption.innerText = lines[count % lines.length];
+    count++;
+
+    scale *= 2;
+    yesBtn.style.transform = `scale(${scale})`;
+
+    const x = Math.random() * (window.innerWidth - 150);
+    const y = Math.random() * (window.innerHeight - 80);
+
+    noBtn.style.position = "absolute";
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
+};
+
+yesBtn.onclick = () => {
+    final.style.display = "flex";
+};
+
+setInterval(() => {
+    const h = document.createElement("div");
+    h.className = "heart";
+    h.innerText = "💖";
+    h.style.left = Math.random() * 100 + "vw";
+    document.body.appendChild(h);
+    setTimeout(() => h.remove(), 5000);
+}, 300);
+</script>
+
+</body>
+</html>
